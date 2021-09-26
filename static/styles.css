@@ -1,0 +1,21 @@
+body {
+  font-family: "Nanum Myeongjo", serif;
+  line-height: 1.8;
+  max-width: 600px;
+  margin: 50px auto 50px;
+  padding: 0 12px 0;
+  font-size: 20px;
+  text-align: justify;
+
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+
+  background-color: hsl(33.1, 64.4%, 91.2%);
+  color: #000;
+}
+
+/* Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap");

@@ -2,9 +2,12 @@ package main
 
 import (
 	"bytes"
+	_ "embed"
 	"encoding/json"
+	"html/template"
 	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
 
 	"github.com/yuin/goldmark"
@@ -13,6 +16,14 @@ import (
 const (
 	buildDir = "docs"
 )
+
+//go:embed templates/chapter.html
+var chapterTemplate string
+
+//go:embed static/styles.css
+var styles string
+
+var tmpl = template.Must(template.New("chapter").Parse(chapterTemplate))
 
 type Config struct {
 	ID          string `json:"id"`
@@ -78,8 +89,25 @@ func buildChapter(config *Config, chapter string) error {
 		return err
 	}
 
-	filename := filepath.Join(buildDir, config.ID, chapter+".html")
-	if err := ioutil.WriteFile(filename, buf.Bytes(), 0644); err != nil {
+	filename := filepath.Join(buildDir, chapter+".html")
+
+	if err := os.MkdirAll(filepath.Dir(filename), 0755); err != nil {
+		return err
+	}
+
+	variables := map[string]interface{}{
+		"Title":   "Great Expectations",
+		"Chapter": template.HTML(buf.String()),
+		"Styles":  template.CSS(styles),
+	}
+
+	file, err := os.Create(filename)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	if err := tmpl.Execute(file, variables); err != nil {
 		return err
 	}
 
