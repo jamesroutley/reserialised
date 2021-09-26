@@ -22,6 +22,23 @@
     <link type="text/css" rel="stylesheet" href="/css/reserialised.css" />
   </head>
   <body>
-    {{.Chapter}}
+    {{ with.PreviousChapters }}
+    <a href="#previous-chapters">Previous chapters</a>
+    {{ end }} {{.Chapter}}
+    <!-- prettier-ignore -->
+    {{with .PreviousChapters}}
+    <hr />
+    <p id="previous-chapters">Previous chapters:</p>
+    <ul>
+      <!-- prettier-ignore -->
+      {{range .}}
+      <li>
+        <a href="{{.URL}}">{{.Name}}</a>
+      </li>
+      <!-- prettier-ignore -->
+      {{end}}
+    </ul>
+    <!-- prettier-ignore -->
+    {{end}}
   </body>
 </html>
